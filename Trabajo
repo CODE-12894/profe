@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inventario End.Tech</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #f8f9fb;
+      padding: 2rem;
+      color: #1f2937;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+    }
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 9999px;
+      cursor: pointer;
+      background: #e5e7eb;
+      font-weight: 600;
+    }
+    .tab-button.active {
+      background: #3b82f6;
+      color: white;
+    }
+    .card {
+      background: white;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      max-width: 1000px;
+      margin: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    th, td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .input-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    input {
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      flex: 1;
+    }
+    button.add, button.delete {
+      padding: 0.5rem 0.75rem;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    button.add {
+      background: #10b981;
+      color: white;
+    }
+    button.delete {
+      background: #ef4444;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Inventario de End.Tech</h1>
+  <div class="tabs">
+    <button class="tab-button active" onclick="showTab('pcs')">PCs</button>
+    <button class="tab-button" onclick="showTab('cables')">Cables</button>
+  </div>
+
+  <div id="pcs" class="card">
+    <h2>Tipos de PC</h2>
+    <div class="input-row">
+      <input type="text" id="tipoPC" placeholder="Tipo">
+      <input type="text" id="modeloPC" placeholder="Modelo">
+      <input type="number" id="cantidadPC" placeholder="Cantidad">
+      <button class="add" onclick="addPC()">Agregar</button>
+    </div>
+    <table id="tablaPCs">
+      <thead>
+        <tr><th>Tipo</th><th>Modelo</th><th>Cantidad</th><th>Acción</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <div id="cables" class="card" style="display: none;">
+    <h2>Tipos de Cables</h2>
+    <div class="input-row">
+      <input type="text" id="tipoCable" placeholder="Tipo">
+      <input type="number" id="cantidadCable" placeholder="Cantidad">
+      <button class="add" onclick="addCable()">Agregar</button>
+    </div>
+    <table id="tablaCables">
+      <thead>
+        <tr><th>Tipo</th><th>Cantidad</th><th>Acción</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script>
+    function showTab(tab) {
+      document.getElementById('pcs').style.display = tab === 'pcs' ? 'block' : 'none';
+      document.getElementById('cables').style.display = tab === 'cables' ? 'block' : 'none';
+      document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+    }
+
+    function addPC() {
+      const tipo = document.getElementById('tipoPC').value;
+      const modelo = document.getElementById('modeloPC').value;
+      const cantidad = document.getElementById('cantidadPC').value;
+      if (!tipo || !modelo || !cantidad) return;
+      const tbody = document.querySelector('#tablaPCs tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${tipo}</td><td>${modelo}</td><td>${cantidad}</td><td><button class="delete" onclick="this.closest('tr').remove()">Eliminar</button></td>`;
+      tbody.appendChild(row);
+      document.getElementById('tipoPC').value = "";
+      document.getElementById('modeloPC').value = "";
+      document.getElementById('cantidadPC').value = "";
+    }
+
+    function addCable() {
+      const tipo = document.getElementById('tipoCable').value;
+      const cantidad = document.getElementById('cantidadCable').value;
+      if (!tipo || !cantidad) return;
+      const tbody = document.querySelector('#tablaCables tbody');
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${tipo}</td><td>${cantidad}</td><td><button class="delete" onclick="this.closest('tr').remove()">Eliminar</button></td>`;
+      tbody.appendChild(row);
+      document.getElementById('tipoCable').value = "";
+      document.getElementById('cantidadCable').value = "";
+    }
+  </script>
+</body>
+</html>
